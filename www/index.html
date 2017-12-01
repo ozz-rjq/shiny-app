@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta charset="UTF-8">
+	<title>Shiny App</title>
+	<link href="https://fonts.googleapis.com/css?family=Cuprum" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+	<link rel="stylesheet" href="normalize.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header class="main-header">Дисципліна &laquo;Сучасні технології створення програмних систем&raquo;</header>
+
+	<div class="container">
+		<main class="main">
+			<h1 class="main-title">Шифрування за допомогою коду Вернама</h1>
+			<section class="main-content">
+				<h2 class="main-content-title">Лабораторна робота №6</h2>
+
+				<form action="#" method="GET">
+					<div class="main-content-block">
+						<fieldset class="main-content-fieldset main-content-left">
+							<label for="text">Введіть вихідний текст:</label>
+							<input type="text" name="text" placeholder="Текст" id="text">
+							<label for="key">Введіть ключ:</label>
+							<input type="text" name="key" placeholder="Ключ" id="key">
+						</fieldset>
+						<fieldset class="main-content-fieldset main-content-right">
+							<label for="result">Результат виконання:</label>
+							<pre id="result" class="shiny-text-output">Тут буде результат</pre>
+						</fieldset>
+					</div>
+					<fieldset class="main-content-fieldset main-content-bottom">
+						<legend>Виберіть тип:</legend>
+						<div class="attr-col shiny-input-radiogroup" id="cipherType">
+							<label><input type="radio" name="cipherType" id="encrypt" checked>Шифрування</label>
+							<label><input type="radio" name="cipherType" id="decrypt">Дешифрування</label><br>
+						</div>
+						<div class="main-content-bottom-add">
+							<button type="submit" class="btn" id="run">Виконати</button>
+						</div>
+						
+					</fieldset>
+				</form>
+
+				<div class="main-content-desc">
+					<b>Короткий опис шифру:</b>
+					Для утворення шифртексту повідомлення об'єднується операцією XOR з ключем (названим одноразовим блокнотом або шифроблокнотом). При цьому ключ повинен мати три критично важливі властивості:<br>
+					1. Бути справді випадковим;<br>
+					2. Збігатися за розміром з заданим відкритим текстом;<br>
+					3. Застосовуватися тільки один раз. <br>
+					<div class="main-content-desc-add">
+						<button type="submit" class="btn js-popup-open">Показати приклад</button>
+					</div>
+				</div>
+			</section>
+		</main>
+		<aside class="creator">
+			<p class="creator-desc">
+				Виконав:
+				<b class="creator-desc-value">ст. гр. АКСм-17-1</b>
+				<b class="creator-desc-value">Татарин Т. М.</b>
+			</p>
+		</aside>
+	</div>
+
+	<footer class="main-footer">
+		Івано-Франківськ, 2017
+	</footer>
+
+	<div class="screen-blackout"></div>
+
+	<div class="modal-content">
+		Відкритий текст	-> S E N D H E L P<br>
+		Букви, замінені відповідними числами ->	19 5 14 4 8 5	12 16<br>
+		Одноразовий блокнот (ключ) -> 7	9	5	2	12	1	0	6<br>
+		Добавлення відкритого текста в одноразовий блокнот -> 26 14	19 6 20 6 12 22<br>
+		Зашифрованний текст -> Z N S F T F L V
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
