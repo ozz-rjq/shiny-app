@@ -22,14 +22,19 @@
 					<div class="main-content-block">
 						<fieldset class="main-content-fieldset main-content-left">
 							<label for="text">Введіть вихідний текст:</label>
+							<pre id="numberOfSymbols" class="shiny-text-output"></pre>
 							<input type="text" name="text" placeholder="Текст" id="text">
 							<label for="key">Введіть ключ:</label>
-							<input type="text" name="key" placeholder="Ключ" id="key">
+							<input type="text" name="key" placeholder="Ключ" id="key" class="shiny-text-output">
 						</fieldset>
 						<fieldset class="main-content-fieldset main-content-right">
 							<label for="result">Результат виконання:</label>
 							<pre id="result" class="shiny-text-output">Тут буде результат</pre>
 						</fieldset>
+					</div>
+					<div class="additional">
+						<label class="gen">Випадково згенерований ключ:</label>
+						<pre id="keygen" class="shiny-text-output">key</pre>
 					</div>
 					<fieldset class="main-content-fieldset main-content-bottom">
 						<legend>Виберіть тип:</legend>
@@ -46,7 +51,7 @@
 
 				<div class="main-content-desc">
 					<b>Короткий опис шифру:</b>
-					Для утворення шифртексту повідомлення об'єднується операцією XOR з ключем (названим одноразовим блокнотом або шифроблокнотом). При цьому ключ повинен мати три критично важливі властивості:<br>
+					Шифр Вернама за модулем m, в якому знаки відкритого тексту, шифрованого тексту та ключа приймають числові значення з кільця вилучень Zm. Шифр є узагальненням оригінального шифра Вернама, де m = 2. При цьому ключ повинен мати три критично важливі властивості:<br>
 					1. Бути справді випадковим;<br>
 					2. Збігатися за розміром з заданим відкритим текстом;<br>
 					3. Застосовуватися тільки один раз. <br>
@@ -72,6 +77,7 @@
 	<div class="screen-blackout"></div>
 
 	<div class="modal-content">
+		<b>Шифрування кодом Вернама за модулем 26 (A=1, ..., Z=26)</b><br>
 		Відкритий текст	-> S E N D H E L P<br>
 		Букви, замінені відповідними числами ->	19 5 14 4 8 5	12 16<br>
 		Одноразовий блокнот (ключ) -> 7	9	5	2	12	1	0	6<br>

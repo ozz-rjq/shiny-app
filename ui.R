@@ -2,7 +2,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   htmlTemplate("www/index.html"),
-
+  
   tags$script('
     document.querySelector("#run").onclick = function() {
       var text = document.querySelector("#text").value;
@@ -17,6 +17,12 @@ shinyUI(fluidPage(
       Shiny.onInputChange("key", key);
       Shiny.onInputChange("result", result);
       Shiny.onInputChange("cipher", cipher);
+
+      var numberOfSymbols = document.querySelector("#numberOfSymbols").value;
+      Shiny.onInputChange("numberOfSymbols", numberOfSymbols);
+
+      var keygen = document.querySelector("#keygen");
+      Shiny.onInputChange("keygen", keygen);
     };
   ')
 ))

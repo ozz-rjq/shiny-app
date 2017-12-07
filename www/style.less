@@ -6,7 +6,6 @@ body{
 }
 
 .main-header{
-	margin: 0;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	margin-bottom: 10px;
@@ -79,13 +78,29 @@ body{
 			margin-bottom: 10px;
 
 			label{
-				display: block;
+				display: inline-block;
 
 				font-family: 'PT Sans Narrow', 'Arial', sans-serif;
 				font-size: 18px;
 				line-height: 24px;
 
 				margin-bottom: 5px;
+			}
+
+			pre{
+				display: inline-block;
+				vertical-align: top;
+
+				margin: 0;
+				padding: 0;
+				padding-left: 10px;
+				border: none;
+
+				font-family: 'PT Sans Narrow', 'Arial', sans-serif;
+				font-size: 18px;
+				line-height: 24px;
+
+				background-color: transparent;
 			}
 
 			input[type=text]{
@@ -101,10 +116,10 @@ body{
 
 				border: 2px solid transparent;
 
-				&:focus{
-				border: 2px solid rgba(66, 50, 16, 0.4);
+					&:focus{
+						border: 2px solid rgba(66, 50, 16, 0.4);
+					}
 				}
-			}
 		}
 
 		&-fieldset{
@@ -131,6 +146,7 @@ body{
 			pre{
 				width: 100%;
 				min-height: 40px;
+				padding-top: 8px;
 
 				text-align: center;
 
@@ -141,7 +157,7 @@ body{
 		}
 
 		&-bottom{
-			margin-top: 20px;
+			margin-top: 10px;
 			
 			background-color: rgba(200,200,200,0.5);
 			border-radius: 10px;
@@ -187,8 +203,7 @@ body{
 }
 
 .btn{
-	display: inline-block;
-	vertical-align: top;
+	display: block;
 
 	border: 0;
 	outline: 0;
@@ -213,6 +228,40 @@ body{
 	&:active{
 		background-color: #5496bd;
 		color: rgba(255,255,255,0.3);
+	}
+}
+
+.additional{
+
+	padding: 5px;
+
+	border-radius: 5px;
+
+	background-color: #dff;
+
+	.gen{
+		display: block;
+
+		font-size: 16px;
+		text-decoration: underline;
+		text-align: center;
+	}
+
+	.shiny-text-output{
+		display: block;
+
+		margin: 0;
+		padding: 0;
+
+		border: none;
+		outline: none;
+		background: transparent;
+
+		font-family: 'Cuprum','PT Sans Narrow', 'Arial', sans-serif;
+		font-size: 18px;
+		line-height: 20px;
+		text-transform: uppercase;
+		text-align: center;
 	}
 }
 
@@ -266,6 +315,11 @@ body{
 	box-shadow: 0 10px 15px 0 rgba(0,0,0,0.4);
 
 	display: none;
+
+	b{
+		display: block;
+		text-align: center;
+	}
 }
 
 .screen-blackout{
