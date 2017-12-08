@@ -1,5 +1,13 @@
 library(shiny)
 
+textValue <- ""
+keyValue <- ""
+
+keyNumbArr <- integer()
+txtNumbArr <- integer()
+encrypted <- character()
+decrypted <- character()
+
 areEqual <- function(a, b){
   if (nchar(a) == nchar(b) && nchar(a) > 0)
     return(TRUE)
@@ -27,22 +35,29 @@ eliminateSpaces <- function(message){
   result
 }
 
-toStr <- function(message){
-  length <- length(message)
+loopString <- function(longerLen, shorter){
+  shorterLen <- nchar(shorter)
   result <- ""
+  val <- 1
   
-  for(i in 1:length){
-    result <- paste(result, message[i], sep="")
+  for (i in 1:longerLen){
+    result <- paste(result, substr(shorter, start = val, stop = val), sep="")
+    
+    if (val%%shorterLen == 0)
+      val = 1
+    else
+      val <- val+1
   }
   
   result
 }
 
 encodeChar <- function(char){
+  numb <- 0
   for(j in 1:length(LETTERS))
-    if (char == LETTERS[j]){
+    if (char == LETTERS[j])
       numb <- j
-    }
+    
   numb
 }
 
@@ -57,6 +72,17 @@ toChars <- function(arg){
   result 
 }
 
+toStr <- function(message){
+  length <- length(message)
+  result <- ""
+  
+  for(i in 1:length){
+    result <- paste(result, message[i], sep="")
+  }
+  
+  result
+}
+
 genKey <- function(length){
   result <- integer()
   
@@ -68,75 +94,82 @@ genKey <- function(length){
   result <- toStr(toChars(result))
 }
 
+encrypt <- function(text, key){
+  length <- nchar(text)
+  
+  for(i in 1:length){
+    txtChar <- substr(text, start = i, stop = i)
+    keyChar <- substr(key, start = i, stop = i)
+    
+    keyNumbArr <- c(keyNumbArr, encodeChar(keyChar))
+    txtNumbArr <- c(txtNumbArr, encodeChar(txtChar))
+  }
+  
+  encryptedNumbs <- (keyNumbArr + txtNumbArr)%%26
+  
+  for(i in 1:length(encryptedNumbs)){
+    if(encryptedNumbs[i] == 0)
+      encryptedNumbs[i] <- encryptedNumbs[i]+26
+  }
+  
+  encrypted <- toStr(toChars(encryptedNumbs))
+}
+
+decrypt <- function(text, key){
+  length <- nchar(text)
+  
+  for(i in 1:length){
+    txtChar <- substr(text, start = i, stop = i)
+    keyChar <- substr(key, start = i, stop = i)
+    
+    keyNumbArr <- c(keyNumbArr, encodeChar(keyChar))
+    txtNumbArr <- c(txtNumbArr, encodeChar(txtChar))
+  }
+  
+  decryptedNumbs <- (((txtNumbArr - keyNumbArr)+26)%%26)
+  
+  for(i in 1:length(decryptedNumbs)){
+    if(decryptedNumbs[i] == 0)
+      decryptedNumbs[i] <- decryptedNumbs[i]+26
+  }
+  
+  decrypted <- toStr(toChars(decryptedNumbs))
+}
+
 shinyServer(
   function(input, output) {
     cipherType <-  reactive({input$cipher})
     text <- reactive(toupper(eliminateSpaces({input$text})))
     key <- reactive(toupper(eliminateSpaces({input$key})))
     
-    keyNumbArr <- integer()
-    txtNumbArr <- integer()
-    encrypted <- character()
-    decrypted <- character()
-    
-    type <- function(){
-      if(!areEqual(text(), key()))
+    run <- function(){
+      if(nchar(text()) > nchar(key()) && nchar(key()) != 0){
+        keyValue <- loopString(nchar(text()), key())
+        textValue <- text()
+      }
+      else{
+        textValue <- text()
+        keyValue <- key()
+      }
+      
+      if(!areEqual(textValue, keyValue))
         return("...")
       
       if(cipherType() == "encrypt")
-        encrypt()
+        encrypt(textValue, keyValue)
       else
-        decrypt()
-    }
-    
-    encrypt <- function(){
-      for(i in 1:nchar(text())){
-        txtChar <- substr(text(), start = i, stop = i)
-        keyChar <- substr(key(), start = i, stop = i)
-          
-        keyNumbArr <- c(keyNumbArr, encodeChar(keyChar))
-        txtNumbArr <- c(txtNumbArr, encodeChar(txtChar))
-      }
-      
-      encryptedNumbs <- (keyNumbArr + txtNumbArr)%%26
-      
-      for(i in 1:length(encryptedNumbs)){
-        if(encryptedNumbs[i] == 0)
-          encryptedNumbs[i] <- encryptedNumbs[i]+26
-      }
-      
-      encrypted <- toChars(encryptedNumbs)
-      
-      encrypted <- toStr(encrypted)
-    }
-    
-    decrypt <- function(){
-      for(i in 1:nchar(text())){
-        txtChar <- substr(text(), start = i, stop = i)
-        keyChar <- substr(key(), start = i, stop = i)
-        
-        keyNumbArr <- c(keyNumbArr, encodeChar(keyChar))
-        txtNumbArr <- c(txtNumbArr, encodeChar(txtChar))
-      }
-      
-      decryptedNumbs <- (((txtNumbArr - keyNumbArr)+26)%%26)
-      
-      for(i in 1:length(decryptedNumbs)){
-        if(decryptedNumbs[i] == 0)
-          decryptedNumbs[i] <- decryptedNumbs[i]+1
-      }
-      
-      decrypted <- toChars(decryptedNumbs)
-      
-      decrypted <- toStr(decrypted)
-    }
-    
-    run <- function(){
-      type()
+        decrypt(textValue, keyValue)
     }
   
     output$result = renderText({
        run()
+    })
+    
+    output$length = renderText({
+      if (getLength(text()) == "0 символ(и/ів)")
+        ""
+      else
+        getLength(text())
     })
     
     output$keygen <- renderText({
@@ -144,17 +177,10 @@ shinyServer(
       randomKey <- genKey(length)
       
       if(length == 0)
-        "Натисніть кнопку \"виконати\", щоб згенерувати ключ"
+        "Введіть повідомлення та натисніть кнопку \"Виконати\",
+         щоб згенерувати випадковий ключ"
       else
         randomKey
-    })
-    
-  
-    output$numberOfSymbols = renderText({
-      if (getLength(text()) == "0 символ(и/ів)")
-        ""
-      else
-        getLength(text())
     })
   }
 )
