@@ -65,9 +65,10 @@ toChars <- function(arg){
   result <- character()
   
   for(i in 1:length(arg))
-    for(j in 1:length(LETTERS))
+    for(j in 1:length(LETTERS)){
       if(as.integer(arg[i]) == j)
         result <- c(result, LETTERS[j])
+    }
       
   result 
 }
